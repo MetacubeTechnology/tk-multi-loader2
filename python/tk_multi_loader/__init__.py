@@ -27,22 +27,26 @@ def show_dialog(app):
     from .dialog import AppDialog
     
     # Create and display the splash screen
+    app.log_debug("Displaying splash dialog")
     splash_pix = QtGui.QPixmap(":/res/splash.png") 
     splash = QtGui.QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)
     splash.setMask(splash_pix.mask())
     splash.show()
     QtCore.QCoreApplication.processEvents()
 
+    app.log_debug("Trying to load LoaderActionManager")
     # create the action manager for the Loader UI:
     from .loader_action_manager import LoaderActionManager
     action_manager = LoaderActionManager()
         
     # start ui
     ui_title = app.get_setting("title_name")
+    app.log_debug("Starting Dialog: %s" % ui_title)
     w = app.engine.show_dialog(ui_title, app, AppDialog, action_manager)
 
     # Keep pointer to dialog so as to be able to hide/show it in actions
     engine_name = app.engine.instance_name
+    app.log_debug("Detected Engine: %s" % engine_name)
     
     # attach splash screen to the main window to help GC
     w.__splash_screen = splash
@@ -51,7 +55,7 @@ def show_dialog(app):
     splash.finish(w.window())
         
     # pop up help screen
-    if w.is_first_launch():
+    if w.is_first_launch() and not (engine_name == "tk-fusion"):
         # wait a bit before show window
         QtCore.QTimer.singleShot(1400, w.show_help_popup)
         

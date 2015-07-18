@@ -72,6 +72,9 @@ configuration:
             Rendered Image: [add_as_a_layer, open_file]
         default_value_tk-mari:
             Alembic Cache: [geometry_import]
+        default_value_tk-fusion:
+            Fusion Comp: [comp_import]
+            Regular Photoshop ColorKey: [loader]
 
 
     entities:
